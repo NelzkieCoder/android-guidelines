@@ -2,7 +2,7 @@
 
 ## 1.1 Project structure
 
-New projects should follow the Android Gradle project structure that is defined on the [Android Gradle plugin user guide](http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Project-Structure). The [ribot Boilerplate](https://github.com/ribot/android-boilerplate) project is a good reference to start from.
+New projects should follow the Android Gradle project structure that is defined on the [Android Gradle plugin user guide](http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Project-Structure).
 
 ## 1.2 File naming
 
@@ -65,7 +65,9 @@ Layout files should match the name of the Android components that they are inten
 | AdapterView item | ---                    | `item_person.xml`             |
 | Partial layout   | ---                    | `partial_stats_bar.xml`       |
 
-A slightly different case is when we are creating a layout that is going to be inflated by an `Adapter`, e.g to populate a `ListView`. In this case, the name of the layout should start with `item_`.
+A slightly different case is when we are creating a layout that is going to be inflated by an `Adapter` (e.g to populate a `ListView`). In this case, the name of the layout should start with `item_`.
+
+When a layout is intended to be used both by an Activity and a Fragment of the same name (e.g., `HomeActivity` and `HomeFragment`), `actvitiy_` will be used as the layout prefix. 
 
 Note that there are cases where these rules will not be possible to apply. For example, when creating layout files that are intended to be part of other layouts. In this case you should use the prefix `partial_`.
 
@@ -105,7 +107,7 @@ You should not do this:
 
 ```java
 try {
-    someComplicatedIOFunction();        // may throw IOException
+    someComplicatedIoFunction();        // may throw IOException
     someComplicatedParsingFunction();   // may throw ParsingException
     someComplicatedSecurityFunction();  // may throw SecurityException
     // phew, made it all the way
@@ -135,9 +137,7 @@ See more info [here](https://source.android.com/source/code-style.html#fully-qua
 
 Fields should be defined at the __top of the file__ and they should follow the naming rules listed below.
 
-* Private, non-static field names start with __m__.
-* Private, static field names start with __s__.
-* Other fields start with a lower case letter.
+* Fields start with a lower case letter.
 * Static final fields (constants) are ALL_CAPS_WITH_UNDERSCORES.
 
 Example:
@@ -146,10 +146,10 @@ Example:
 public class MyClass {
     public static final int SOME_CONSTANT = 42;
     public int publicField;
-    private static MyClass sSingleton;
-    int mPackagePrivate;
-    private int mPrivate;
-    protected int mProtected;
+    private static MyClass singleton;
+    int packagePrivate;
+    private int private;
+    protected int protected;
 }
 ```
 
@@ -228,21 +228,26 @@ More information about annotation guidelines can be found [here](http://source.a
 
 __Classes, Methods and Constructors__
 
-When annotations are applied to a class, method, or constructor, they are listed after the documentation block and should appear as __one annotation per line__ .
+When annotations are applied to a class, field, method, or constructor, they are listed after the documentation block and should appear as __one annotation per line__ .
 
 ```java
 /* This is the documentation block about the class */
-@AnnotationA
-@AnnotationB
-public class MyAnnotatedClass { }
-```
+@Singleton
+@SomeCustomAnnotation
+public class MyDataLoader implements DataLoader {
 
-__Fields__
+    @NonNull
+    @VisibleForTesting
+    DataWebService webService;
 
-Annotations applying to fields should be listed __on the same line__, unless the line reaches the maximum line length.
+    @Inject
+    public MyDataLoader(@NonNull DataWebService webService) {
+        this.webService = webService;
+    }
 
-```java
-@Nullable @Mock DataManager mDataManager;
+    @Override
+    @SupressWarnings("OnlyRealWayIsToSupressKindOfWarning")
+    public Observable<List<Data>> loadData() { ... }
 ```
 
 ### 2.2.7 Limit variable scope
@@ -304,11 +309,11 @@ if (BuildConfig.DEBUG) Log.d(TAG, "The value of x is " + x);
 There is no single correct solution for this but using a __logical__ and __consistent__ order will improve code learnability and readability. It is recommendable to use the following order:
 
 1. Constants
-2. Fields
-3. Constructors
-4. Override methods and callbacks (public or private)
-5. Public methods
-6. Private methods
+2. Static methods
+3. Fields
+4. Constructors
+5. Overriden methods, Activity and Fragment lifecycle methods, and callbacks
+6. Methods
 7. Inner classes or interfaces
 
 Example:
@@ -316,16 +321,26 @@ Example:
 ```java
 public class MainActivity extends Activity {
 
-	private String mTitle;
-    private TextView mTextViewTitle;
+    public static final String EXTRA_TITLE = "EXTRA_TITLE";
 
-    public void setTitle(String title) {
-    	mTitle = title;
+    public static Intent getStartIntent(String title) {
+        Intent intent = new Intent();
+	intent.putStringExtra(EXTRA_TITLE, title);
+	
+	return intent;
     }
+
+    private String title;
+    
+    private TextView textViewTitle;
 
     @Override
     public void onCreate() {
         ...
+    }
+
+    public void setTitle(String title) {
+    	this.title = title;
     }
 
     private void setUpView() {
@@ -333,7 +348,7 @@ public class MainActivity extends Activity {
     }
 
     static class AnInnerClass {
-
+        ...
     }
 
 }
@@ -496,7 +511,7 @@ loadPicture(context, "http://ribot.co.uk/images/sexyjoe.jpg", mImageViewProfileP
 ```java
 loadPicture(context,
         "http://ribot.co.uk/images/sexyjoe.jpg",
-        mImageViewProfilePicture,
+        imageViewProfilePicture,
         clickListener,
         "Title of the picture");
 ```
@@ -507,11 +522,11 @@ Rx chains of operators require line-wrapping. Every operator must go in a new li
 
 ```java
 public Observable<Location> syncLocations() {
-    return mDatabaseHelper.getAllLocations()
+    return locationsLoader.loadAllLocations()
             .concatMap(new Func1<Location, Observable<? extends Location>>() {
                 @Override
                  public Observable<? extends Location> call(Location location) {
-                     return mRetrofitService.getLocation(location.id);
+                     return retrofitService.getLocation(location.id);
                  }
             })
             .retry(new Func2<Integer, Throwable, Boolean>() {
@@ -533,7 +548,7 @@ This is good:
 
 ```xml
 <TextView
-	android:id="@+id/text_view_profile"
+	android:id="@+id/textview_profile"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content" />
 ```
@@ -543,7 +558,7 @@ This is __bad__ :
 ```xml
 <!-- Don\'t do this! -->
 <TextView
-    android:id="@+id/text_view_profile"
+    android:id="@+id/textview_profile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 </TextView>
@@ -561,16 +576,16 @@ IDs should be prefixed with the name of the element in lowercase underscore. For
 
 | Element            | Prefix            |
 | -----------------  | ----------------- |
-| `TextView`           | `text_`             |
-| `ImageView`          | `image_`            |
-| `Button`             | `button_`           |
-| `Menu`               | `menu_`             |
+| `TextView`           | `textview_`     |
+| `ImageView`          | `imageview_`    |
+| `Button`             | `button_`       |
+| `Menu`               | `menu_`         |
 
 Image view example:
 
 ```xml
 <ImageView
-    android:id="@+id/image_profile"
+    android:id="@+id/imageview_profile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
@@ -587,17 +602,14 @@ Menu example:
 
 #### 2.3.2.2 Strings
 
-String names start with a prefix that identifies the section they belong to. For example `registration_email_hint` or `registration_name_hint`. If a string __doesn't belong__ to any section, then you should follow the rules below:
+String names should be just what they actually are with a maximum of up to 3, otherwise another resource string has the exact same name. All strings shall start with an upper case letter.
 
-
-| Prefix             | Description                           |
-| -----------------  | --------------------------------------|
-| `error_`             | An error message                      |
-| `msg_`               | A regular information message         |
-| `title_`             | A title, i.e. a dialog title          |
-| `action_`            | An action such as "Save" or "Create"  |
-
-
+```xml
+<string name="project">Project</string>
+<string name="project_guidelines">Project guidelines</string>
+<string name="project_guidelines_android">Project guidelines android</string>
+<string name="project_guidelines_android_code">Project guidelines android code</string>
+```
 
 #### 2.3.2.3 Styles and Themes
 
@@ -621,8 +633,13 @@ Test classes should match the name of the class the tests are targeting, followe
 
 Test methods are annotated with `@Test` and should generally start with the name of the method that is being tested, followed by a precondition and/or expected behaviour.
 
-* Template: `@Test void methodNamePreconditionExpectedBehaviour()`
-* Example: `@Test void signInWithEmptyEmailFails()`
+```java
+    @Test 
+    public void methodNamePreconditionExpectedBehaviour() { ... }
+
+    @Test 
+    public void signInWithEmptyEmailFails() { ... }
+```
 
 Precondition and/or expected behaviour may not always be required if the test is clear enough without them.
 
