@@ -548,7 +548,7 @@ This is good:
 
 ```xml
 <TextView
-	android:id="@+id/textview_profile"
+	android:id="@+id/text_view_profile"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content" />
 ```
@@ -558,7 +558,7 @@ This is __bad__ :
 ```xml
 <!-- Don\'t do this! -->
 <TextView
-    android:id="@+id/textview_profile"
+    android:id="@+id/text_view_profile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 </TextView>
