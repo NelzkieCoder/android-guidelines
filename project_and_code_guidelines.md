@@ -576,16 +576,17 @@ IDs should be prefixed with the name of the element in lowercase underscore. For
 
 | Element            | Prefix            |
 | -----------------  | ----------------- |
-| `TextView`           | `textview_`     |
-| `ImageView`          | `imageview_`    |
+| `TextView`           | `text_view_`     |
+| `ImageView`          | `image_view_`    |
 | `Button`             | `button_`       |
 | `Menu`               | `menu_`         |
+| `LinearLayout`     | `linear_layout_` |
 
 Image view example:
 
 ```xml
 <ImageView
-    android:id="@+id/imageview_profile"
+    android:id="@+id/image_view_profile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
