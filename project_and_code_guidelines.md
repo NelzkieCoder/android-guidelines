@@ -450,7 +450,7 @@ public static UserFragment newInstance(User user) {
 
 __Note 1__: These methods should go at the top of the class before `onCreate()`.
 
-__Note 2__: If we provide the methods described above, the keys for extras and arguments should be `private` because there is not need for them to be exposed outside the class.
+__Note 2__: If we provide the methods described above, the keys for extras and arguments should be `private` because there is no need for them to be exposed outside the class.
 
 ### 2.2.15 Line length limit
 
@@ -475,15 +475,9 @@ When the line is broken at an operator, the break comes __before__ the operator.
 ```java
 int longName = anotherVeryLongVariable + anEvenLongerOne - thisRidiculousLongOne
         + theFinalOne;
-```
-
-__Assignment Operator Exception__
-
-An exception to the `break at operators` rule is the assignment operator `=`, where the line break should happen __after__ the operator.
-
-```java
-int longName =
-        anotherVeryLongVariable + anEvenLongerOne - thisRidiculousLongOne + theFinalOne;
+	
+int longName 
+	= anotherVeryLongVariable + anEvenLongerOne - thisRidiculousLongOne + theFinalOne;
 ```
 
 __Method chain case__
@@ -548,7 +542,7 @@ This is good:
 
 ```xml
 <TextView
-	android:id="@+id/text_view_profile"
+	android:id="@+id/profile_picture"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content" />
 ```
@@ -558,7 +552,7 @@ This is __bad__ :
 ```xml
 <!-- Don\'t do this! -->
 <TextView
-    android:id="@+id/text_view_profile"
+    android:id="@+id/profile_picture"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 </TextView>
@@ -571,22 +565,18 @@ Resource IDs and names are written in __lowercase_underscore__.
 
 #### 2.3.2.1 ID naming
 
-IDs should be prefixed with the name of the element in lowercase underscore. For example:
-
-
-| Element            | Prefix            |
-| -----------------  | ----------------- |
-| `TextView`           | `text_view_`     |
-| `ImageView`          | `image_view_`    |
-| `Button`             | `button_`       |
-| `Menu`               | `menu_`         |
-| `LinearLayout`     | `linear_layout_` |
+IDs should be named based on their context.
 
 Image view example:
 
 ```xml
 <ImageView
-    android:id="@+id/image_view_profile"
+    android:id="@+id/profile_picture"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    
+<EditText
+    android:id="@+id/email"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
@@ -596,8 +586,8 @@ Menu example:
 ```xml
 <menu>
 	<item
-        android:id="@+id/menu_done"
-        android:title="Done" />
+        android:id="@+id/done"
+        android:title="@string/done" />
 </menu>
 ```
 
