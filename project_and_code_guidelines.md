@@ -565,9 +565,9 @@ Resource IDs and names are written in __lowercase_underscore__.
 
 #### 2.3.2.1 ID naming
 
-IDs should be named based on their context.
+IDs must have a prefix based on the name of their context.
 
-Image view example:
+Example views on `activity_profile`:
 
 ```xml
 <ImageView
@@ -576,17 +576,17 @@ Image view example:
     android:layout_height="wrap_content" />
     
 <EditText
-    android:id="@+id/email"
+    android:id="@+id/profile_email"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
 
-Menu example:
+`profile` menu example:
 
 ```xml
 <menu>
 	<item
-        android:id="@+id/done"
+        android:id="@+id/profile_done"
         android:title="@string/done" />
 </menu>
 ```
