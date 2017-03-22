@@ -81,6 +81,49 @@ A good practice is to not include the word `menu` as part of the name because th
 
 Resource files in the values folder should be __plural__, e.g. `strings.xml`, `styles.xml`, `colors.xml`, `dimens.xml`, `attrs.xml`
 
+## 1.2 Package structure
+
+### 1.2.1 Naming
+
+All packages must be named in singular unless it's a java reserved word:
+```login
+    model
+        database
+        webservice
+    presenter
+    view
+profile
+    model
+    presenter
+    view
+util```
+
+### 1.2.2 Grouping
+
+Packages are grouped by feature:
+```login
+    model
+        database
+            UserDatabaseLoader.java
+            UserDatabaseSaver.java
+        webservice
+            LoginWebService.java
+        UserAuthenticator.java
+    presenter
+        LoginPresenter.java
+    view
+        LoginView.java
+profile
+    model
+        ProfileLoader.java
+    presenter
+        ProfilePresenter.java
+    view
+        ProfileView.java
+util
+    TextUtils.java
+    TimeUtils.java```
+
 # 2 Code guidelines
 
 ## 2.1 Java language rules
