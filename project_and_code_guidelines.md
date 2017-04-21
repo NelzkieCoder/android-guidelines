@@ -96,7 +96,8 @@ profile
     model
     presenter
     view
-util```
+util
+```
 
 ### 1.2.2 Grouping
 
@@ -122,7 +123,8 @@ profile
         ProfileView.java
 util
     TextUtils.java
-    TimeUtils.java```
+    TimeUtils.java
+```
 
 # 2 Code guidelines
 
