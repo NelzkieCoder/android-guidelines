@@ -13,7 +13,12 @@ For classes that extend an Android component, the name of the class should end w
 
 ### 1.2.2 Resources files
 
-Resources file names are written in __lowercase_underscore__.
+Resources file names are written in __lowercase_underscore__:
+
+```
+styles_buttons.xml
+styles_texts.xml
+```
 
 #### 1.2.2.1 Drawable files
 
